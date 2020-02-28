@@ -1,5 +1,5 @@
 {
-    "name": "tfd-wordpress",
+    "name": "tfd/wordpress",
     "description": "21st digital WordPress setup in interaction with roots/sage",
     "type": "library",
     "require": {
