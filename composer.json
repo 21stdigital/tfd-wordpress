@@ -1,0 +1,89 @@
+{
+    "name": "tfd-wordpress",
+    "description": "21st digital WordPress setup in interaction with roots/sage",
+    "type": "library",
+    "require": {
+        "php": "^7.1",
+        "composer/installers": "^1.5",
+        "anthonybudd/wp_model": "dev-master@dev",
+        "advanced-custom-fields/advanced-custom-fields-pro": "*",
+        "johnbillion/extended-cpts": "^4.3",
+        "stoutlogic/acf-builder": "^1.9",
+        "roots/wordpress": "*",
+        "wpackagist-plugin/auto-cloudinary": "^1.1",
+        "wpackagist-plugin/fly-dynamic-image-resizer": "^2.0",
+        "wpackagist-plugin/disable-comments": "^1.10",
+        "wpackagist-plugin/disable-emojis": "^1.7",
+        "wpackagist-plugin/disable-gutenberg": "^2.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "21st digital",
+            "email": "hello@21st.digital",
+            "homepage": "https://21st.digital/",
+            "role": "Company"
+        },
+        {
+            "name": "Steffen Ruether",
+            "email": "steffen@21st.digital",
+            "homepage": "https://21st.digital",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TFD\\": "Setup/"
+        },
+        "files": [
+            "tfd-wordpress.php"
+        ]
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "advanced-custom-fields/advanced-custom-fields-pro",
+                "package": {
+                    "name": "advanced-custom-fields/advanced-custom-fields-pro",
+                    "version": "^5.8",
+                    "type": "wordpress-plugin",
+                    "dist": {
+                        "type": "zip",
+                        "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%version}"
+                    },
+                    "require": {
+                        "composer/installers": "^1.4",
+                        "ffraenz/private-composer-installer": "^2.0"
+                    }
+                }
+            }
+        },
+        {
+            "type": "vcs",
+            "url": "http://github.com/simnom/WP_Model"
+        }
+    ],
+    "extra": {
+        "installer-paths": {
+            "web/app/mu-plugins/{$name}/": [
+                "type:wordpress-muplugin",
+                "roots/soil",
+                "wpackagist-plugin/disable-emojis"
+            ],
+            "web/app/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+}
