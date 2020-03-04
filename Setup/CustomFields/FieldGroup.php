@@ -101,7 +101,7 @@ class FieldGroup extends FieldsBuilder
 
     public static function register($field_groups)
     {
-        if (function_exists('acf_add_local_field_group') && function_exists('acf/init')) {
+        if (function_exists('acf_add_local_field_group') && function_exists('add_action')) {
             add_action('acf/init', function () use ($field_groups) {
                 foreach ($field_groups as $field_group) {
                     if ($field_group instanceof FieldGroup) {
