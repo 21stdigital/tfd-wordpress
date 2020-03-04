@@ -9,7 +9,7 @@ class Image
     public $prefix;
     public $focal_point;
 
-    private $data;
+    private $data = [];
     private $post;
 
     public $original;
