@@ -40,7 +40,7 @@ class Image
 
     public function __construct($id)
     {
-        if (is_attachment($id) && self::isImage($id)) {
+        if (get_post_type($id) === 'attachment' && self::isImage($id)) {
             $this->id = $id;
             $this->post = get_post($this->id);
             $this->focal_point = $this->getFocalPoint();
@@ -97,7 +97,6 @@ class Image
 
     public function drawImage($sizeGroup = null)
     {
-
     }
 
     private function renderView($view, $params = [])
