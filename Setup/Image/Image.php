@@ -44,6 +44,7 @@ class Image
             $this->id = $id;
             $this->post = get_post($this->id);
             $this->focal_point = $this->getFocalPoint();
+            $this->original = $this->getOriginal();
         } else {
             throw new \Exception("Can not find image with this id [${$id}]");
         }
@@ -53,8 +54,8 @@ class Image
     private function getOriginal()
     {
         $image = self::isDynamicResizeEnabled()
-            ? fly_get_attachment_image_src($this->ID, 'full')
-            : wp_get_attachment_image_src($this->ID, 'full');
+            ? fly_get_attachment_image_src($this->id, 'full')
+            : wp_get_attachment_image_src($this->id, 'full');
         if (isset($image) && is_array($image) && !empty($image)) {
             list($src, $w, $h) = $image;
             return (object)[
@@ -89,14 +90,26 @@ class Image
         if ($sizeGroup) {
             return '';
         } else {
-            $this->drawImage();
+            return $this->drawImage();
         }
     }
 
-
-
-    public function drawImage($sizeGroup = null)
+    public function drawImageWithSizeGroup($sizeGroup)
     {
+        return "<img
+            srcset='{$sizeGroup->srcset}'
+            sizes='{$sizeGroup->sizes}'
+            src='{$this->src}'
+            alt='{$this->alt}'
+        />";
+    }
+
+    public function drawImage()
+    {
+        return "<img
+            src='{$this->src}'
+            alt='{$this->alt}'
+        />";
     }
 
     private function renderView($view, $params = [])
@@ -146,6 +159,9 @@ class Image
             case 'original_src':
                 return $this->set($attribute, wp_get_attachment_url($this->id));
 
+            case 'src':
+                return $this->set($attribute, wp_get_attachment_url($this->id));
+
             case 'mime_type':
             case 'mimeType':
                 return $this->set($attribute, get_post_mime_type($this->id));
@@ -154,6 +170,7 @@ class Image
                 return $this->set($attribute, $this->getMeta('_wp_attachment_image_alt'));
 
             case 'name':
+            case 'title':
                 return $this->set($attribute, get_the_title($this->id));
 
             case 'caption':
@@ -167,10 +184,10 @@ class Image
                 return $this->set($attribute, get_permalink($this->id));
 
             case 'width':
-                return 0; //TBD
+                return $this->set($attribute, $this->original->width);
 
             case 'height':
-                return 0; //TBD
+                return $this->set($attribute, $this->original->height);
 
             case 'aspect_ratio':
             case 'aspectRatio':
