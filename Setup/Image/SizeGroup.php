@@ -8,7 +8,7 @@ class SizeGroup
     public $sizesData = [];
 
 
-    public function srcSetData()
+    public function srcsetData()
     {
         return [];
     }
@@ -23,25 +23,28 @@ class SizeGroup
     {
         switch ($attribute) {
             case 'srcset':
-                return $this->getSrcset();
+                return implode(', ', $this->getSrcset());
             case 'sizes':
-                return $this->getSizes();
+                return implode(', ', $this->getSizes());
         }
         return null;
     }
 
 
-    private static function getSrcset()
+    private function getSrcset()
     {
-        $srcset = array_filter(array_map(function ($src) {
+        $srcsetData = $this->srcsetData();
+        $srcset = array_filter(array_map(function ($src) use ($srcsetData) {
             if (array_key_exists('output', $src) && false === $src['output']) {
                 return null;
             }
-            if (array_key_exists('extends', $src) && $src['extends'] && array_key_exists($src['extends'], $this->srcset) && is_array($this->srcset[$src['extends']])) {
-                $params = array_merge($this->srcset[$src['extends']], $src);
+            dlog($src);
+            if (array_key_exists('extends', $src) && $src['extends'] && array_key_exists($src['extends'], $srcsetData) && is_array($srcsetData[$src['extends']])) {
+                $params = array_merge($srcsetData[$src['extends']], $src);
                 return $this->buildTransformationSlug($params);
             }
-        }, $this->srcsetData()));
+        }, $srcsetData));
+        dlog($srcset);
         return $srcset;
     }
 
@@ -56,12 +59,13 @@ class SizeGroup
      * @param  array $args
      * @return string
      */
-    public function buildTransformationSlug($args = array()) {
+    public function buildTransformationSlug($args = [])
+    {
         if (empty($args)) {
             return '';
         }
 
-        $cloudinary_params = array(
+        $cloudinary_params = [
             'angle'                => 'a',
             'aspect_ratio'         => 'ar',
             'background'           => 'b',
@@ -99,7 +103,7 @@ class SizeGroup
             'page'                 => 'pg',
             'video_sampling'       => 'vs',
             'progressive'          => 'fl_progressive',
-        );
+        ];
 
         $slug = [];
         foreach ($args as $key => $value) {
@@ -122,50 +126,9 @@ class SizeGroup
 
     public function validValue($key = '', $value = '')
     {
-        if (( 'w' === $key || 'h' === $key ) && empty($value)) {
+        if (('w' === $key || 'h' === $key) && empty($value)) {
             return false;
         }
         return true;
     }
 }
-
-// Info
-// https://cloudinary.com/blog/automatic_responsive_images_with_client_hints
-
-SizeGroup::register(
-    [
-        'default' => [
-            'output' => false,
-            'dpr' => 2,
-            'effect' => null,
-            'fetch_format' => 'auto',
-            'quality' => 'auto',
-            'crop' => 'fill', //'fit', 'limit,
-            'gravity' => 'faces:auto', //'faces', 'auto',
-        ],
-        'xl' => [
-            'extends' => 'default',
-            'width' => 1440,
-            'height' => 680,
-        ],
-        'xl' => [
-            'width' => 1440 * 0.8,
-            'height' => 680 * 0.8,
-        ],
-        'md' => [
-            'width' => 1440 * 0.6,
-            'height' => 680 * 0.6,
-        ],
-        'sm' => [
-            'width' => 1440 * 0.5,
-            'height' => 680 * 0.5,
-        ],
-        'xs' => [
-            'width' => 1440 * 0.3,
-            'height' => 680 * 0.3,
-        ],
-    ],
-    [
-        '100vw'
-    ]
-);

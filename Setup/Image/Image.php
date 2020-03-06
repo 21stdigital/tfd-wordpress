@@ -94,10 +94,50 @@ class Image
         }
     }
 
+    public function cloudUrl($srcset)
+    {
+        $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-fetch');
+        // $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-autoupload');
+        $cloud_type = null;// apply_filters('tfd_image_cloud_type', 'fly-dynamic');
+
+        if ('cloudinary-autoupload' === $cloud_type) {
+            $url = rtrim(apply_filters('tfd_image_cloud_url', 'https://res.cloudinary.com'), "/");
+            $cloud_name = rtrim(apply_filters('tfd_image_cloud_name', 'tfd'), "/");
+            $upload_folder = rtrim(apply_filters('tfd_image_cloud_upload_folder', '/stage/uploads'), "/");
+            return $url . '/' . $cloud_name . '/' . $srcset['transformations'] . '/' . $upload_folder . '/' . $this->filename;
+        }
+
+        if ('cloudinary-fetch' === $cloud_type) {
+            $url = apply_filters('tfd_image_cloud_url', 'https://res.cloudinary.com');
+            $cloud_name = apply_filters('tfd_image_cloud_name', 'tfd');
+            return $url . '/' . $cloud_name . '/image/fetch/' . $srcset['transformations'] . '/' . urlencode($this->src);
+        }
+
+        if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
+            $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
+            return $image['src'];
+        }
+
+        $image = wp_get_attachment_image_src($this->id, "{$srcset['width']}x{$srcset['height']}");
+        // $image = wp_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']]);
+        if (is_array($image) && count($image)) {
+            return $image[0];
+        }
+
+        return $this->src;
+    }
+
+    private function getSrcset(SizeGroup $sizeGroup)
+    {
+        return implode(', ', array_map(function ($srcset) {
+            return $this->cloudUrl($srcset) . " {$srcset['width']}w";
+        }, $sizeGroup->srcset));
+    }
+
     public function drawImageWithSizeGroup($sizeGroup)
     {
         return "<img
-            srcset='{$sizeGroup->srcset}'
+            srcset='{$this->getSrcset($sizeGroup)}'
             sizes='{$sizeGroup->sizes}'
             src='{$this->src}'
             alt='{$this->alt}'
@@ -156,6 +196,9 @@ class Image
         }
 
         switch ($attribute) {
+            case 'filename':
+                return $this->set($attribute, basename($this->original_src));
+
             case 'original_src':
                 return $this->set($attribute, wp_get_attachment_url($this->id));
 
@@ -316,6 +359,13 @@ class Image
         return '';
     }
 
+    public static function find($id)
+    {
+        if (get_post_type($id) === 'attachment' && self::isImage($id)) {
+            return new Image($id);
+        }
+        return null;
+    }
     /**
      * Find featured image model by it's post ID
      *
@@ -324,6 +374,6 @@ class Image
      */
     public static function findFeaturedImage($id)
     {
-        return has_post_thumbnail($id) ? Image::find((int)get_post_thumbnail_id($id)) : null;
+        return has_post_thumbnail($id) ? self::find((int)get_post_thumbnail_id($id)) : null;
     }
 }
