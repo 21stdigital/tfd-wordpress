@@ -10,4 +10,9 @@ class FieldModule
     {
         $this->data = array_merge($this->data, $data);
     }
+
+    public function toArray()
+    {
+        return $this->data;
+    }
 }
