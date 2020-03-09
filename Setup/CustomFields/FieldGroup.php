@@ -35,8 +35,11 @@ class FieldGroup extends FieldsBuilder
     ];
 
 
-    public function __construct()
+    public function __construct($id = null)
     {
+        if (!is_null($id)) {
+            $this->id = $id;
+        }
         if (is_null($this->id)) {
             $obj = new \ReflectionClass($this);
             $this->id = $this->id ?: str_replace('-', '_', basename($obj->getFileName(), '.php'));
@@ -84,9 +87,17 @@ class FieldGroup extends FieldsBuilder
 
     public static function partial(string $partial)
     {
-        $partial = str_replace('.', '/', $partial);
-        $partial = ucfirst($partial);
-        return include(App\config('theme.dir')."/app/Setup/Fields/Partials/{$partial}.php");
+        $path = array_map(function ($item) {
+            return ucfirst($item);
+        }, explode('.', $partial));
+        $class = array_reduce($path, function ($carry, $item) {
+            $carry .= '\\' . $item;
+            return $carry;
+        }, 'App\\Setup\Fields\\Partials');
+        return new $class;
+        // $partial = str_replace('.', '/', $partial);
+        // $partial = ucfirst($partial);
+        // return include_once(App\config('theme.dir')."/app/Setup/Fields/Partials/{$partial}.php");
     }
 
 
