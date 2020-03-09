@@ -2,6 +2,14 @@
 
 namespace TFD\Image;
 
+/************************************************************
+# Responsive Images Done Right: A Guide To And srcset
+# https://www.smashingmagazine.com/2014/05/responsive-images-done-right-guide-picture-srcset/
+
+# Responsive Images – <picture>, srcset, sizes & Co.
+# https://blog.kulturbanause.de/2014/09/responsive-images-srcset-sizes-adaptive/
+*/
+
 class SizeGroup
 {
     public $srcsetData = [];
