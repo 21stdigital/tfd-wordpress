@@ -8,6 +8,10 @@ namespace TFD\Image;
 
 # Responsive Images – <picture>, srcset, sizes & Co.
 # https://blog.kulturbanause.de/2014/09/responsive-images-srcset-sizes-adaptive/
+
+# Responsive Breakpoints
+# https://www.responsivebreakpoints.com/
+
 */
 
 class SizeGroup

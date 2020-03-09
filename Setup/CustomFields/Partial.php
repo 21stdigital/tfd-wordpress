@@ -2,8 +2,6 @@
 
 namespace TFD\CustomFields;
 
-use TFD\Fields;
-
 class Partial extends FieldGroup
 {
     public $id = null;
