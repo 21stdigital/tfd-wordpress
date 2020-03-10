@@ -9,15 +9,17 @@
  * License:      MIT License
  */
 
+if (! defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+
 
 /**
  * TFD required files
  *
  * Add or remove files to the array as needed.
  */
-array_map(function ($file) use ($sage_error) {
+array_map(function ($file) {
     $file = "Setup/{$file}.php";
-    if (!locate_template($file, true, true)) {
-        $sage_error(sprintf(__('Error locating <code>%s</code> for inclusion.', 'tfd'), $file), 'File not found');
-    }
+    require_once($file);
 }, ['debug', 'filters']);

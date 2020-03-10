@@ -41,10 +41,7 @@
   "autoload": {
     "psr-4": {
       "TFD\\": "Setup/"
-    },
-    "files": [
-      "tfd-wordpress.php"
-    ]
+    }
   },
   "repositories": [
     {
