@@ -82,16 +82,10 @@ class Image
     }
 
 
-    public function draw($sizeGroup = null, $classes = "")
+    public function draw($sizeGroup = null, $class = "")
     {
-
-        // $defaultClasses = apply_filters('tfd_image_classes', ['Image']);
-
-        if ($sizeGroup) {
-            return '';
-        } else {
-            return $this->drawImage($classes);
-        }
+        $class = apply_filters('tfd_image_class', $class);
+        return $this->drawImage($sizeGroup, $class);
     }
 
     public function cloudUrl($srcset)
@@ -134,22 +128,27 @@ class Image
         }, $sizeGroup->srcset));
     }
 
-    public function drawImageWithSizeGroup($sizeGroup)
+    public function drawImage($sizeGroup = null, $class = "")
     {
-        return "<img
-            srcset='{$this->getSrcset($sizeGroup)}'
-            sizes='{$sizeGroup->sizes}'
-            src='{$this->src}'
-            alt='{$this->alt}'
-        />";
-    }
+        $attributes = [
+            'src' => $this->src,
+            'alt' => $this->alt,
+        ];
 
-    public function drawImage($classes = "")
-    {
-        return "<img
-            src='{$this->src}'
-            alt='{$this->alt}'
-        />";
+        if ($class) {
+            $attributes['class'] = $class;
+        }
+
+        if ($sizeGroup) {
+            $attributes['srcset'] = $this->getSrcset($sizeGroup);
+            $attributes['sizes'] = $sizeGroup->sizes;
+        }
+
+        $attr = '';
+        foreach ($attributes as $key => $value) {
+            $attr .= "{$key}='{$value}' ";
+        }
+        return "<img {$attr} />";
     }
 
     private function renderView($view, $params = [])
