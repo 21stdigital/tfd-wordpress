@@ -50,13 +50,15 @@ class SizeGroup
             if (array_key_exists('output', $src) && false === $src['output']) {
                 return null;
             }
-            dlog($src);
             if (array_key_exists('extends', $src) && $src['extends'] && array_key_exists($src['extends'], $srcsetData) && is_array($srcsetData[$src['extends']])) {
                 $params = array_merge($srcsetData[$src['extends']], $src);
-                return $this->buildTransformationSlug($params);
+                return [
+                    'width' => $params['width'],
+                    'height' => $params['height'],
+                    'transformations' => $this->buildTransformationSlug($params)
+                ];
             }
         }, $srcsetData));
-        dlog($srcset);
         return $srcset;
     }
 
