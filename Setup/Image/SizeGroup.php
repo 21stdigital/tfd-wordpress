@@ -35,7 +35,7 @@ class SizeGroup
     {
         switch ($attribute) {
             case 'srcset':
-                return implode(', ', $this->getSrcset());
+                return $this->getSrcset();
             case 'sizes':
                 return implode(', ', $this->getSizes());
         }
