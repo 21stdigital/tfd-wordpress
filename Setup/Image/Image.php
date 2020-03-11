@@ -82,7 +82,7 @@ class Image
     }
 
 
-    public function draw($sizeGroup = null)
+    public function draw($sizeGroup = null, $classes = "")
     {
 
         // $defaultClasses = apply_filters('tfd_image_classes', ['Image']);
@@ -90,7 +90,7 @@ class Image
         if ($sizeGroup) {
             return '';
         } else {
-            return $this->drawImage();
+            return $this->drawImage($classes);
         }
     }
 
@@ -144,7 +144,7 @@ class Image
         />";
     }
 
-    public function drawImage()
+    public function drawImage($classes = "")
     {
         return "<img
             src='{$this->src}'
