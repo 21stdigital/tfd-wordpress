@@ -14,7 +14,8 @@ class Image
 
     public $original;
     public $focalPoint;
-    private $sizeGroup;
+
+    public $native_lazy_loading = true;
 
     private $viewPath;
 
@@ -134,6 +135,15 @@ class Image
             'src' => $this->src,
             'alt' => $this->alt,
         ];
+
+        // Native Lazy Loading
+        // https://css-tricks.com/native-lazy-loading/
+        if ($this->native_lazy_loading) {
+            // lazy: is a good candidate for lazy loading.
+            // eager: is not a good candidate for lazy loading. Load right away.
+            // auto: browser will determine whether or not to lazily load.
+            $attributes['loading'] = 'lazy';
+        }
 
         if ($class) {
             $attributes['class'] = $class;
