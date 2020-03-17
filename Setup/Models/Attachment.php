@@ -31,19 +31,19 @@ class Attachment
 
     public function __construct($id)
     {
-        if (get_post_type($id) === 'attachment' && self::isImage($id)) {
+        if (get_post_type($id) === 'attachment') {
             $this->id = $id;
             $this->post = get_post($this->id);
         } else {
-            throw new \Exception("Can not find the attachment with this id [${$id}]");
+            throw new \Exception("Can not find the attachment with this id [{$id}]");
         }
     }
 
     public function downloadLink($label = '', $class = null)
     {
         $attributes = array_filter([
-            'href' => $this->href,
-            'donwload' => $this->title,
+            'href' => $this->src,
+            'download' => $this->title,
             'class' => $class,
         ]);
 
@@ -192,5 +192,4 @@ class Attachment
         }
         return null;
     }
-
 }
