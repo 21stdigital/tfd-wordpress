@@ -46,7 +46,6 @@ class FieldModule
             $carry .= ucfirst($item);
             return $carry;
         }, '');
-        dlog($func);
         return $func;
     }
 

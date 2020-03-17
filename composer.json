@@ -17,7 +17,8 @@
     "wpackagist-plugin/disable-emojis": "^1.7",
     "wpackagist-plugin/disable-gutenberg": "^2.0",
     "wpackagist-plugin/acf-extended": "0.8.4.6",
-    "filp/whoops": "^2.7"
+    "filp/whoops": "^2.7",
+    "soberwp/intervention":"1.2.0-p"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
