@@ -158,7 +158,7 @@ class Image
         foreach ($attributes as $key => $value) {
             $attr .= "{$key}='{$value}' ";
         }
-        return "<img {$attr} />";
+        return "<img {$attr} >";
     }
 
     private function renderView($view, $params = [])

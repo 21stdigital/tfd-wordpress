@@ -39,6 +39,23 @@ class Attachment
         }
     }
 
+    public function downloadLink($label = '', $class = null)
+    {
+        $attributes = array_filter([
+            'href' => $this->href,
+            'donwload' => $this->title,
+            'class' => $class,
+        ]);
+
+        $attr = '';
+        foreach ($attributes as $key => $value) {
+            $attr .= "{$key}='{$value}' ";
+        }
+
+        $label = $label ?: $this->filename;
+        return "<a {$attr}>{$label}</a>";
+    }
+
     // ----------------------------------------------------
     // PROPERTIES
     // ---------------------------------------------------
