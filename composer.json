@@ -16,7 +16,7 @@
     "wpackagist-plugin/disable-comments": "^1.10",
     "wpackagist-plugin/disable-emojis": "^1.7",
     "wpackagist-plugin/disable-gutenberg": "^2.0",
-    "wpackagist-plugin/acf-extended": "0.8.4.6",
+    "wpackagist-plugin/acf-extended": "^0.8.5",
     "filp/whoops": "^2.7",
     "soberwp/intervention":"1.2.0-p"
   },
