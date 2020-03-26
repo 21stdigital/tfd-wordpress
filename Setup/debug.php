@@ -34,6 +34,7 @@ if (!function_exists('dlog')) {
 if (!function_exists('console_log')) {
     function console_log()
     {
+        $data = func_get_args();
         if (function_exists('add_action')) {
             add_action('wp_head', function () use ($data) {
                 echo '<script>';
