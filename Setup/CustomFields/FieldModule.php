@@ -4,7 +4,7 @@ namespace TFD\CustomFields;
 
 class FieldModule
 {
-    private $data = [];
+    protected $data = [];
     public $name;
 
     public $attributes = [];
