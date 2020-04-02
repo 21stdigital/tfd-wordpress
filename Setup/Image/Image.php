@@ -91,9 +91,9 @@ class Image
 
     public function cloudUrl($srcset)
     {
-        $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-fetch');
+        // $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-fetch');
         // $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-autoupload');
-        $cloud_type = null;// apply_filters('tfd_image_cloud_type', 'fly-dynamic');
+        $cloud_type = apply_filters('tfd_image_cloud_type', 'fly-dynamic');
 
         if ('cloudinary-autoupload' === $cloud_type) {
             $url = rtrim(apply_filters('tfd_image_cloud_url', 'https://res.cloudinary.com'), "/");
