@@ -51,7 +51,7 @@ class SizeGroup
                 return null;
             }
             if (array_key_exists('extends', $src) && $src['extends'] && array_key_exists($src['extends'], $srcsetData) && is_array($srcsetData[$src['extends']])) {
-                $params = array_merge($srcsetData[$src['extends']], $src);
+                $params = array_filter(array_merge($srcsetData[$src['extends']], $src));
                 return [
                     'width' => $params['width'],
                     'height' => $params['height'],
