@@ -98,8 +98,9 @@ class Image
         if ('cloudinary-autoupload' === $cloud_type) {
             $url = rtrim(apply_filters('tfd_image_cloud_url', 'https://res.cloudinary.com'), "/");
             $cloud_name = rtrim(apply_filters('tfd_image_cloud_name', 'tfd'), "/");
-            $upload_folder = rtrim(apply_filters('tfd_image_cloud_upload_folder', '/stage/uploads'), "/");
-            return $url . '/' . $cloud_name . '/' . $srcset['transformations'] . '/' . $upload_folder . '/' . $this->filename;
+            $upload_folder = trim(rtrim(apply_filters('tfd_image_cloud_upload_folder', '/stage/uploads'), "/"), "/");
+            $res = $url . '/' . $cloud_name . '/' . $srcset['transformations'] . '/' . $upload_folder . '/' . $this->upload_src;
+            return $res;
         }
 
         if ('cloudinary-fetch' === $cloud_type) {
@@ -200,7 +201,6 @@ class Image
     public function __get(string $attribute)
     {
         if ($res = $this->get($attribute)) {
-            dlog($res);
             return $res;
         }
 
@@ -213,6 +213,10 @@ class Image
 
             case 'src':
                 return $this->set($attribute, wp_get_attachment_url($this->id));
+
+            case 'upload_src':
+                return $this->set($attribute, trim($this->src, home_url() . '/app/uploads'));
+
 
             case 'mime_type':
             case 'mimeType':
