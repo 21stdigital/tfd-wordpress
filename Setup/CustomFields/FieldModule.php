@@ -15,10 +15,16 @@ class FieldModule
         $this->name = $this->name ?: $this->data['acf_fc_layout'];
     }
 
+    public function getId()
+    {
+        return $this->name ?: $this->data['acf_fc_layout'];
+    }
+
     public function toArray()
     {
         $res = $this->data;
         $res['name'] = $this->name;
+        $res['id'] = $this->getId();
 
         foreach ($this->attributes as $attribute) {
             if ($this->isAttribute($attribute)) {

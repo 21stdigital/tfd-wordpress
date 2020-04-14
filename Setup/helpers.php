@@ -8,7 +8,7 @@ if (!function_exists('array_keys_exists')) {
     }
 }
 
-if (!function_exists('pretty_utc_date')) {
+if (!function_exists('prettyUtcDate')) {
     /**
      * Given a string with the date and time in UTC, returns a pretty string in the
      * configured language, format and timezone in WordPress' options.
@@ -23,7 +23,7 @@ if (!function_exists('pretty_utc_date')) {
      *      This returns a pretty datetime string in the correct language and
      *      following the admin's settings.
      */
-    function pretty_utc_date(string $utc_date): string
+    function prettyUtcDate(string $utc_date): string
     {
         if (! preg_match('/^\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d$/', $utc_date)) {
             /* I have not tested other formats, so only this one allowed. */
@@ -56,5 +56,18 @@ if (!function_exists('pretty_utc_date')) {
         /* In this example, the installation of WordPress has been set to Italian,
         * and the final result is "Maggio 30, 2019 10:06 am" */
         return date_i18n($settings_format, $seconds_since_local_1_jan_1970);
+    }
+}
+
+
+if (!function_exists('camelCase')) {
+    function camelCase($string, $dontStrip = [])
+    {
+        /*
+        * This will take any dash or underscore turn it into a space, run ucwords against
+        * it so it capitalizes the first letter in all words separated by a space then it
+        * turns and deletes all spaces.
+        */
+        return lcfirst(str_replace(' ', '', ucwords(preg_replace('/^a-z0-9'.implode('', $dontStrip).']+/', ' ', $string))));
     }
 }
