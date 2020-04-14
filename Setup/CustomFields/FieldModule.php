@@ -62,7 +62,10 @@ class FieldModule
             if (method_exists($this, $func)) {
                 return call_user_func_array([$this, $func], [$this->get($attribute)]);
             }
+        } elseif (array_key_exists($attribute, $this->data)) {
+            return $this->data[$attribute];
         }
+        return null;
     }
 
 
