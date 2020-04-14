@@ -57,6 +57,10 @@ class FieldModule
 
     public function __get($attribute)
     {
+        if ('id' === $attribute) {
+            return $this->getId();
+        }
+
         if (in_array($attribute, $this->getAttributes())) {
             $func = $this->funcNameForAttribute($attribute);
             if (method_exists($this, $func)) {
