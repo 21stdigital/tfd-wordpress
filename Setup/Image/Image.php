@@ -111,7 +111,7 @@ class Image
 
         if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
             $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
-            return $image['src'];
+            return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
         }
 
         $image = wp_get_attachment_image_src($this->id, "{$srcset['width']}x{$srcset['height']}");
