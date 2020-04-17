@@ -10,6 +10,7 @@ class Image implements JsonSerializable
     public $id;
     public $prefix;
     public $focal_point;
+    public $file_type;
 
     private $data = [];
     private $post;
@@ -28,6 +29,7 @@ class Image implements JsonSerializable
             $this->post = get_post($this->id);
             $this->focal_point = $this->getFocalPoint();
             $this->original = $this->getOriginal();
+            $this->file_type = wp_check_filetype($this->filename);
         } else {
             throw new \Exception("Can not find image with this id [${$id}]");
         }
@@ -91,8 +93,10 @@ class Image implements JsonSerializable
         }
 
         if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
-            $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
-            dlog($image, $this->id, $srcset['width'], $srcset['height']);
+            dlog(explode(",", $srcset['transformations']));
+            $transformations = explode(",", $srcset['transformations']);
+            $crop = in_array('c_fill', $transformations) || in_array('c_limit', $transformations);
+            $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], $crop);
             return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
         }
 
@@ -195,11 +199,13 @@ class Image implements JsonSerializable
             case 'filename':
                 return $this->set($attribute, basename($this->original_src));
 
-            case 'fileextension':
-                return $this->set($attribute, wp_check_filetype($this->filename));
+            case 'file_extension':
+            case 'fileExtension':
+            case 'ext':
+                return $this->set($attribute, $this->file_type['ext']);
 
             case 'exists':
-                return $this->set($attribute, file_exists($this->filename));
+                return $this->set($attribute, file_exists($this->original_src));
 
             case 'original_src':
                 return $this->set($attribute, wp_get_attachment_url($this->id));
@@ -210,10 +216,10 @@ class Image implements JsonSerializable
             case 'upload_src':
                 return $this->set($attribute, trim($this->src, home_url() . '/app/uploads'));
 
-
             case 'mime_type':
             case 'mimeType':
-                return $this->set($attribute, get_post_mime_type($this->id));
+                // return $this->set($attribute, get_post_mime_type($this->id));
+                return $this->set($attribute, $this->file_type['type']);
 
             case 'alt':
                 return $this->set($attribute, $this->getMeta('_wp_attachment_image_alt'));
@@ -300,6 +306,14 @@ class Image implements JsonSerializable
     public function toArray()
     {
         $model = $this->data;
+
+        $model['filename'] = $this->filename;
+        $model['file_extension'] = $this->file_extension;
+        $model['exists'] = $this->exists;
+        $model['original_src'] = $this->original_src;
+        $model['src'] = $this->src;
+        $model['upload_src'] = $this->upload_src;
+        $model['permalink'] = $this->permalink;
 
         $model['post_type'] = $this->postType;
         $model['id'] = $this->id;
@@ -410,7 +424,6 @@ class Image implements JsonSerializable
     public static function render(Image $image = null, $size_group = null, $class = "")
     {
         if ($image) {
-            dlog($image);
             return $image->draw($size_group, $class);
         }
 
