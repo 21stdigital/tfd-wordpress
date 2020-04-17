@@ -31,7 +31,7 @@ class Image implements JsonSerializable
             $this->original = $this->getOriginal();
             $this->file_type = wp_check_filetype($this->filename);
         } else {
-            throw new \Exception("Can not find image with this id [${id}]");
+            throw new \Exception("Can not find image with this id [{$id}]");
         }
     }
 
