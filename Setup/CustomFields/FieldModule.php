@@ -69,7 +69,6 @@ class FieldModule
         } elseif (array_key_exists($attribute, $this->data)) {
             return $this->data[$attribute];
         }
-        return null;
     }
 
 

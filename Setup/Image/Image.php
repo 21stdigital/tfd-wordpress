@@ -2,7 +2,9 @@
 
 namespace TFD\Image;
 
-class Image
+use JsonSerializable;
+
+class Image implements JsonSerializable
 {
     public $postType = 'attachment';
     public $id;
@@ -18,26 +20,6 @@ class Image
     public $native_lazy_loading = true;
 
     private $viewPath;
-
-
-    public $virtual = [
-        'name',
-        'alt',
-        'caption',
-        'description',
-        'href',
-        'src',
-        'originalSrc',
-        'width',
-        'height',
-        'aspectRatio',
-        'orientation',
-        'fpx',
-        'fpy',
-        'mimeType',
-        'originalSrc'
-    ];
-
 
     public function __construct($id)
     {
@@ -83,10 +65,10 @@ class Image
     }
 
 
-    public function draw($sizeGroup = null, $class = "")
+    public function draw($size_group = null, $class = "")
     {
         $class = apply_filters('tfd_image_class', $class);
-        return $this->drawImage($sizeGroup, $class);
+        return $this->drawImage($size_group, $class);
     }
 
     public function cloudUrl($srcset)
@@ -94,7 +76,6 @@ class Image
         // $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-fetch');
         // $cloud_type = apply_filters('tfd_image_cloud_type', 'cloudinary-autoupload');
         $cloud_type = apply_filters('tfd_image_cloud_type', 'fly-dynamic');
-
         if ('cloudinary-autoupload' === $cloud_type) {
             $url = rtrim(apply_filters('tfd_image_cloud_url', 'https://res.cloudinary.com'), "/");
             $cloud_name = rtrim(apply_filters('tfd_image_cloud_name', 'tfd'), "/");
@@ -111,6 +92,12 @@ class Image
 
         if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
             $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
+            dlog($image, $this->id, $srcset['width'], $srcset['height']);
+            return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
+        }
+
+        if ('rewrite' === $cloud_type) {
+            $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
             return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
         }
 
@@ -123,14 +110,14 @@ class Image
         return $this->src;
     }
 
-    private function getSrcset(SizeGroup $sizeGroup)
+    private function getSrcset(SizeGroup $size_group)
     {
         return implode(', ', array_map(function ($srcset) {
             return $this->cloudUrl($srcset) . " {$srcset['width']}w";
-        }, $sizeGroup->srcset));
+        }, $size_group->srcset));
     }
 
-    public function drawImage($sizeGroup = null, $class = "")
+    public function drawImage($size_group = null, $class = "")
     {
         $attributes = [
             'src' => $this->src,
@@ -150,9 +137,9 @@ class Image
             $attributes['class'] = $class;
         }
 
-        if ($sizeGroup) {
-            $attributes['srcset'] = $this->getSrcset($sizeGroup);
-            $attributes['sizes'] = $sizeGroup->sizes;
+        if ($size_group) {
+            $attributes['srcset'] = $this->getSrcset($size_group);
+            $attributes['sizes'] = $size_group->sizes;
         }
 
         $attr = '';
@@ -208,6 +195,12 @@ class Image
             case 'filename':
                 return $this->set($attribute, basename($this->original_src));
 
+            case 'fileextension':
+                return $this->set($attribute, wp_check_filetype($this->filename));
+
+            case 'exists':
+                return $this->set($attribute, file_exists($this->filename));
+
             case 'original_src':
                 return $this->set($attribute, wp_get_attachment_url($this->id));
 
@@ -260,7 +253,6 @@ class Image
         }
     }
 
-
     public function getAspectRatio($w = null, $h = null)
     {
         $w = $w ?: $this->width;
@@ -291,7 +283,32 @@ class Image
     }
 
 
+    // ----------------------------------------------------
+    // SERIALIZATION
+    // ----------------------------------------------------
 
+    /**
+     * Returns an array representaion of the model for serialization
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function toArray()
+    {
+        $model = $this->data;
+
+        $model['post_type'] = $this->postType;
+        $model['id'] = $this->id;
+        $model['prefix'] = $this->prefix;
+        $model['focal_point'] = $this->focal_point;
+        $model['native_lazy_loading'] = $this->native_lazy_loading;
+
+        return $model;
+    }
 
     // ----------------------------------------------------
     // STATIC METHODS
@@ -388,5 +405,22 @@ class Image
     public static function findFeaturedImage($id)
     {
         return has_post_thumbnail($id) ? self::find((int)get_post_thumbnail_id($id)) : null;
+    }
+
+    public static function render(Image $image = null, $size_group = null, $class = "")
+    {
+        if ($image) {
+            dlog($image);
+            return $image->draw($size_group, $class);
+        }
+
+        $placeholder = apply_filters('tfd_image_placeholder', 'http://lorempixel.com/1500/1000/');
+        if (is_numeric($placeholder)) {
+            return self::find((int)$placeholder)->draw($size_group, $class);
+        }
+
+        if (is_string($placeholder)) {
+            return "<img href='{$placeholder}' class='{$class}'>";
+        }
     }
 }
