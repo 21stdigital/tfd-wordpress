@@ -93,7 +93,6 @@ class Image implements JsonSerializable
         }
 
         if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
-            dlog(explode(",", $srcset['transformations']));
             $transformations = explode(",", $srcset['transformations']);
             $crop = in_array('c_fill', $transformations) || in_array('c_limit', $transformations);
             $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], $crop);
