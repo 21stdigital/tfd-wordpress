@@ -16,9 +16,14 @@ namespace TFD\Image;
 
 class SizeGroup
 {
+    public $sourcesData = [];
     public $srcsetData = [];
     public $sizesData = [];
 
+    public function sourcesData()
+    {
+        return [];
+    }
 
     public function srcsetData()
     {
@@ -34,6 +39,8 @@ class SizeGroup
     public function __get(string $attribute)
     {
         switch ($attribute) {
+            case 'sources':
+                return $this->getSources();
             case 'srcset':
                 return $this->getSrcset();
             case 'sizes':
@@ -42,10 +49,30 @@ class SizeGroup
         return null;
     }
 
-
-    private function getSrcset()
+    private function getSources()
     {
-        $srcsetData = $this->srcsetData();
+        $sourcesData = $this->sourcesData();
+        if (array_key_exists('default', $sourcesData) && is_array($sourcesData['default'])) {
+            $default = ['default' => $sourcesData['default']];
+        }
+
+        if (is_array($sourcesData) && array_key_exists('sources', $sourcesData) && is_array($sourcesData['sources'])) {
+            $sources = array_filter(array_map(function ($source) use ($default) {
+                if (!array_key_exists('srcset', $source) || !count($source['srcset'])) {
+                    return null;
+                }
+                $source['scrset'] = $this->getSrcset(array_merge($default, $source['srcset']));
+                return $source;
+            }, $sourcesData['sources']));
+            dlog($sources);
+            return $sources;
+        }
+        return null;
+    }
+
+    private function getSrcset($srcsetData = null)
+    {
+        $srcsetData = $srcsetData ?: $this->srcsetData();
         $srcset = array_filter(array_map(function ($src) use ($srcsetData) {
             if (array_key_exists('output', $src) && false === $src['output']) {
                 return null;
@@ -144,5 +171,15 @@ class SizeGroup
             return false;
         }
         return true;
+    }
+
+    public static function em($px)
+    {
+        return $px / 16 . 'em';
+    }
+
+    public static function minWidth($width)
+    {
+        return "(min-width: {$width})";
     }
 }

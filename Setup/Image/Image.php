@@ -262,7 +262,7 @@ class Image implements JsonSerializable
     {
         $w = $w ?: $this->width;
         $h = $h ?: $this->height;
-        return $h / $w;
+        return $w / $h;
     }
 
     public function getOrientation($w = null, $h = null)
@@ -319,6 +319,7 @@ class Image implements JsonSerializable
         $model['prefix'] = $this->prefix;
         $model['focal_point'] = $this->focal_point;
         $model['native_lazy_loading'] = $this->native_lazy_loading;
+        $model['ascpect_ratio'] = $this->aspect_ratio;
 
         return $model;
     }
