@@ -213,7 +213,16 @@ class Image implements JsonSerializable
                 return $this->set($attribute, wp_get_attachment_url($this->id));
 
             case 'upload_src':
-                return $this->set($attribute, trim($this->src, home_url() . '/app/uploads'));
+                $wp_upload_dir = wp_upload_dir();
+                $home_url = get_home_url();
+                $upload_dir = str_replace($home_url, '', $wp_upload_dir['baseurl']);
+                $res = $this->src;
+                if (substr($this->src, 0, strlen($wp_upload_dir['baseurl'])) == $$wp_upload_dir['baseurl']) {
+                    return $this->set($attribute, substr($this->src, strlen($wp_upload_dir['baseurl'])));
+                } elseif (substr($this->src, 0, strlen($upload_dir)) == $upload_dir) {
+                    return $this->set($attribute, substr($this->src, strlen($upload_dir)));
+                }
+                return $this->src;
 
             case 'mime_type':
             case 'mimeType':
