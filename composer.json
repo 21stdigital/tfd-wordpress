@@ -8,7 +8,6 @@
     "anthonybudd/wp_model": "dev-master@dev",
     "johnbillion/extended-cpts": "^4.3",
     "stoutlogic/acf-builder": "^1.9",
-    "log1x/acf-fluent-helpers": "dev-master",
     "samrap/acf-fluent": "^0.4.0",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "wpackagist-plugin/auto-cloudinary": "^1.1",
