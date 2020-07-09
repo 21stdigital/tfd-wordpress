@@ -22,4 +22,4 @@ if (! defined('ABSPATH')) {
 array_map(function ($file) {
     $file = "Setup/{$file}.php";
     require_once($file);
-}, ['debug', 'acf', 'helpers', 'filters']);
+}, ['debug', 'acf', 'helpers', 'filters', 'wysiwyg']);
