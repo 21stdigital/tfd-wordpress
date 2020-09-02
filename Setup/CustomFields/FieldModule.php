@@ -13,6 +13,12 @@ class FieldModule
     {
         $this->data = array_merge($this->data, $data);
         $this->name = $this->name ?: $this->data['acf_fc_layout'];
+        $this->__before();
+    }
+
+    protected function __before()
+    {
+        return null;
     }
 
     public function getId()
