@@ -216,12 +216,15 @@ class Image implements JsonSerializable
                 $wp_upload_dir = wp_upload_dir();
                 $home_url = get_home_url();
                 $upload_dir = str_replace($home_url, '', $wp_upload_dir['baseurl']);
-                $res = $this->src;
+                $remote_dir = apply_filters('tfd_image_remote_dir', null);
+                $res = $this->original->src;
                 $upload_src = '';
                 if (substr($this->src, 0, strlen($wp_upload_dir['baseurl'])) == $wp_upload_dir['baseurl']) {
                     $upload_src = substr($this->src, strlen($wp_upload_dir['baseurl']));
                 } elseif (substr($this->src, 0, strlen($upload_dir)) == $upload_dir) {
                     $upload_src = substr($this->src, strlen($upload_dir));
+                } elseif ($remote_dir && substr($this->src, 0, strlen($remote_dir)) == $remote_dir) {
+                    $upload_src = substr($this->src, strlen($remote_dir));
                 }
                 return $this->set($attribute, ltrim($upload_src, '/'));
 
