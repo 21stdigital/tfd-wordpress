@@ -6,6 +6,7 @@ class FieldModule
 {
     protected $data = [];
     public $name;
+    public $valid = true;
 
     public $attributes = [];
 

@@ -418,6 +418,12 @@ class Image implements JsonSerializable
 
     public static function find($id)
     {
+        if (is_array($id)) {
+            $id = $id['id'] ?? null;
+            if (!$id) {
+                return null;
+            }
+        }
         if (get_post_type($id) === 'attachment' && self::isImage($id)) {
             return new Image($id);
         }
