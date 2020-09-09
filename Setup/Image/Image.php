@@ -214,8 +214,9 @@ class Image implements JsonSerializable
 
             case 'upload_src':
                 $wp_upload_dir = wp_upload_dir();
-                $home_url = get_home_url();
-                $upload_dir = str_replace($home_url, '', $wp_upload_dir['baseurl']);
+                // $home_url = get_home_url();
+                // $upload_dir = str_replace($home_url, '', $wp_upload_dir['baseurl']);
+                $upload_dir = '/app/uploads';
                 $remote_dir = apply_filters('tfd_image_remote_dir', null);
                 $res = $this->original->src;
                 $upload_src = '';
