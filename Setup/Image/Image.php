@@ -456,4 +456,15 @@ class Image implements JsonSerializable
             return "<img href='{$placeholder}' class='{$class}'>";
         }
     }
+
+    public static function getSrcsetSizes($sizes, $dpr = [1,2])
+    {
+        $srcsetSizes = [];
+        foreach ($sizes as $size) {
+            foreach ($dpr as $ratio) {
+                $srcsetSizes[] = $size * $ratio;
+            }
+        }
+        return $srcsetSizes;
+    }
 }
