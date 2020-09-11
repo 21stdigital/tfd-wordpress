@@ -2,10 +2,28 @@
 
 add_filter('acf/fields/wysiwyg/toolbars', function ($toolbars) {
     $toolbars['Very Simple' ] = array();
-    $toolbars['Very Simple' ][1] = array('bold' , 'italic' , 'underline', 'link' );
+    $toolbars['Very Simple' ][1] = ['bold' , 'italic' , 'underline', 'link'];
 
     $toolbars['Only Link' ] = array();
-    $toolbars['Only Link' ][1] = array('link');
+    $toolbars['Only Link' ][1] = ['link'];
+
+    $toolbars['TFD Default'] = array();
+    $toolbars['TFD Default'][1] = [
+        'formatselect',
+        'styleselect',
+        'bold',
+        'italic',
+        'blockquote',
+        'bullist',
+        'numlist',
+        'link',
+        'pastetext',
+        'removeformat',
+        'unlink',
+        'undo',
+        'redo',
+        'fullscreen',
+    ];
 
     return $toolbars;
 });
