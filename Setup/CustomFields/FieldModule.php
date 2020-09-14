@@ -7,12 +7,21 @@ class FieldModule
     protected $data = [];
     public $name;
     public $valid = true;
+    public $styles = [];
+    public $background = null;
 
     public $attributes = [];
 
     public function __construct($data)
     {
         $this->data = array_merge($this->data, $data);
+        $this->styles = $this->data['layout_settings']['styling'];
+        $this->styles = array_filter(array_map(function ($key, $value) {
+            if ('background' === $key && $value) {
+                $this->background = $value;
+            }
+            return $value ?: null;
+        }, array_keys($this->styles), $this->styles));
         $this->name = $this->name ?: $this->data['acf_fc_layout'];
         $this->__before();
     }
@@ -32,6 +41,8 @@ class FieldModule
         $res = $this->data;
         $res['name'] = $this->name;
         $res['id'] = $this->getId();
+        $res['styles'] = $this->styles;
+        $res['background'] = $this->background;
 
         foreach ($this->attributes as $attribute) {
             if ($this->isAttribute($attribute)) {
@@ -96,6 +107,8 @@ class FieldModule
         switch ($attribute) {
             case 'name':
                 return $this->name;
+            case 'styles':
+                return $this->styles;
             default:
                 if (isset($this->data[$attribute])) {
                     return $this->data[$attribute];
