@@ -15,7 +15,7 @@ class FieldModule
     public function __construct($data)
     {
         $this->data = array_merge($this->data, $data);
-        $this->styles = array_filter($this->data['styles'] ?? []);
+        $this->styles = $this->data['styles'] ?? [];
         $this->background = $this->styles['--background'] ?? null;
         $this->name = $this->name ?: $this->data['acf_fc_layout'];
         $this->__before();
@@ -104,8 +104,6 @@ class FieldModule
                 return $this->name;
             case 'styles':
                 return $this->styles;
-            case 'background':
-                return $this->background;
             default:
                 if (isset($this->data[$attribute])) {
                     return $this->data[$attribute];
