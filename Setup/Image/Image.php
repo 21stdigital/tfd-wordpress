@@ -60,7 +60,7 @@ class Image implements JsonSerializable
         return (object)[
             'x' => $x,
             'y' => $y,
-            'bg_pos' => $x * 100 . '%' . $y * 100 . '%',
+            'bg_pos' => $x * 100 . '% ' . $y * 100 . '%',
             'bg_pos_x' => $x * 100 . '%',
             'bg_pos_y' => $y * 100 . '%',
         ];
