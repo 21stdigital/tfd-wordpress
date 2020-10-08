@@ -17,7 +17,7 @@ class FieldModule
         $this->data = array_merge($this->data, $data);
         $this->styles = $this->data['styles'] ?? [];
         $this->background = $this->styles['--background'] ?? null;
-        $this->name = $this->name ?: $this->data['acf_fc_layout'];
+        $this->name = ucfirst($this->name ?: $this->data['acf_fc_layout']);
         $this->__before();
     }
 
@@ -28,7 +28,7 @@ class FieldModule
 
     public function getId()
     {
-        return $this->name ?: $this->data['acf_fc_layout'];
+        return ucfirst($this->name ?: $this->data['acf_fc_layout']);
     }
 
     public function toArray()
