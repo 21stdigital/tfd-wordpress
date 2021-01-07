@@ -7,6 +7,13 @@ use App;
 
 class FieldGroup extends FieldsBuilder
 {
+    // WPML TRANSLATION MANAGEMENT
+    // wpml_cf_preferences property
+    // 0 = do not translate
+    // 1 = copy
+    // 2 = translate
+    // 3 = copy only once
+
     public $id = null;
     public $key = null;
     public $title = null;
