@@ -9,7 +9,7 @@
     "stoutlogic/acf-builder": "^1.9",
     "samrap/acf-fluent": "^0.4.0",
     "advanced-custom-fields/advanced-custom-fields-pro": "*",
-    "wpackagist-plugin/auto-cloudinary": "^1.1",
+    "wpackagist-plugin/auto-cloudinary": "^1.2",
     "wpackagist-plugin/fly-dynamic-image-resizer": "^2.0",
     "wpackagist-plugin/disable-comments": "^1.10",
     "wpackagist-plugin/disable-emojis": "^1.7",
@@ -55,7 +55,7 @@
       "type": "package",
       "package": {
         "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.8.7",
+        "version": "5.9.3",
         "type": "wordpress-plugin",
         "dist": {
           "type": "zip",
