@@ -4,6 +4,7 @@ namespace TFD\CustomFields;
 
 class FieldModule
 {
+    private $key_prefix = '';
     protected $data = [];
     public $name;
     public $valid = true;
@@ -14,6 +15,7 @@ class FieldModule
 
     public function __construct($data)
     {
+        $this->key_prefix = array_key_exists('acf_key_prefix', $data) ? $data['acf_key_prefix'] : '';
         $this->data = array_merge($this->data, $data);
         $this->styles = $this->data['styles'] ?? [];
         $this->background = $this->styles['--background'] ?? null;
@@ -36,6 +38,7 @@ class FieldModule
         $res = $this->data;
         $res['name'] = $this->name;
         $res['id'] = $this->getId();
+        $res['key_prefix'] = $this->key_prefix;
         $res['styles'] = $this->styles;
         $res['background'] = $this->background;
 
