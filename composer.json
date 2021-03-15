@@ -63,7 +63,7 @@
         },
         "require": {
           "composer/installers": "^1.4",
-          "ffraenz/private-composer-installer": "^4.0"
+          "ffraenz/private-composer-installer": "^5.0"
         }
       }
     }
