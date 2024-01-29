@@ -38,9 +38,11 @@ class Image implements JsonSerializable
 
     private function getOriginal()
     {
-        $image = self::isDynamicResizeEnabled()
-            ? fly_get_attachment_image_src($this->id, 'full')
-            : wp_get_attachment_image_src($this->id, 'full');
+        // $image = self::isDynamicResizeEnabled()
+        //     ? fly_get_attachment_image_src($this->id, 'full')
+        //     : wp_get_attachment_image_src($this->id, 'full');
+
+        $image = wp_get_attachment_image_src($this->id, 'full');
         if (isset($image) && is_array($image) && !empty($image)) {
             list($src, $w, $h) = $image;
             return (object)[
@@ -92,17 +94,17 @@ class Image implements JsonSerializable
             return $url . '/' . $cloud_name . '/image/fetch/' . $srcset['transformations'] . '/' . urlencode($this->src);
         }
 
-        if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
-            $transformations = explode(",", $srcset['transformations']);
-            $crop = in_array('c_fill', $transformations) || in_array('c_limit', $transformations);
-            $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], $crop);
-            return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
-        }
+        // if ('fly-dynamic' === $cloud_type && function_exists('fly_get_attachment_image')) {
+        //     $transformations = explode(",", $srcset['transformations']);
+        //     $crop = in_array('c_fill', $transformations) || in_array('c_limit', $transformations);
+        //     $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], $crop);
+        //     return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
+        // }
 
-        if ('rewrite' === $cloud_type) {
-            $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
-            return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
-        }
+        // if ('rewrite' === $cloud_type) {
+        //     $image = fly_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']], true);
+        //     return count($image) && array_key_exists('src', $image) ? $image['src'] : null;
+        // }
 
         $image = wp_get_attachment_image_src($this->id, "{$srcset['width']}x{$srcset['height']}");
         // $image = wp_get_attachment_image_src($this->id, [$srcset['width'], $srcset['height']]);
@@ -353,7 +355,8 @@ class Image implements JsonSerializable
 
     public static function isDynamicResizeEnabled()
     {
-        return function_exists('fly_get_attachment_image_src');
+        return false;
+        // return function_exists('fly_get_attachment_image_src');
     }
 
     public static function isCloudinaryEnabled()
