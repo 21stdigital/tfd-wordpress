@@ -1,39 +1,15 @@
 {
-  "name": "tfd/wordpress",
-  "description": "21st digital WordPress setup in interaction with roots/sage",
-  "type": "wordpress-muplugin",
-  "require": {
-    "php": "^7.1",
-    "composer/installers": "^1.5",
-    "johnbillion/extended-cpts": "^4.3",
-    "stoutlogic/acf-builder": "^1.10",
-    "samrap/acf-fluent": "^0.4.0",
-    "advanced-custom-fields/advanced-custom-fields-pro": "*",
-    "wpackagist-plugin/auto-cloudinary": "^1.2",
-    "wpackagist-plugin/fly-dynamic-image-resizer": "^2.0",
-    "wpackagist-plugin/disable-comments": "^2.1",
-    "wpackagist-plugin/disable-emojis": "^1.7",
-    "wpackagist-plugin/disable-gutenberg": "^2.0",
-    "wpackagist-plugin/acf-extended": "^0.8.5",
-    "filp/whoops": "^2.7",
-    "soberwp/intervention":"1.2.0-p"
-  },
-  "require-dev": {
-    "roave/security-advisories": "dev-master",
-    "squizlabs/php_codesniffer": "^3.4"
-  },
-  "license": "MIT",
   "authors": [
     {
-      "name": "21st digital",
       "email": "hello@21st.digital",
       "homepage": "https://21st.digital/",
+      "name": "21st digital",
       "role": "Company"
     },
     {
-      "name": "Steffen Ruether",
       "email": "steffen@21st.digital",
       "homepage": "https://21st.digital",
+      "name": "Steffen Ruether",
       "role": "Developer"
     }
   ],
@@ -42,32 +18,7 @@
       "TFD\\": "Setup/"
     }
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://wpackagist.org"
-    },
-    {
-      "type": "vcs",
-      "url": "http://github.com/simnom/WP_Model"
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "version": "5.9.3",
-        "type": "wordpress-plugin",
-        "dist": {
-          "type": "zip",
-          "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%version}"
-        },
-        "require": {
-          "composer/installers": "^1.4",
-          "ffraenz/private-composer-installer": "^5.0"
-        }
-      }
-    }
-  ],
+  "description": "21st digital WordPress setup in interaction with roots/sage",
   "extra": {
     "installer-paths": {
       "web/app/mu-plugins/{$name}/": [
@@ -80,6 +31,42 @@
       ]
     }
   },
+  "license": "MIT",
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "name": "tfd/wordpress",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "vcs",
+      "url": "http://github.com/simnom/WP_Model"
+    },
+    {
+      "type": "composer",
+      "url": "https://connect.advancedcustomfields.com"
+    }
+  ],
+  "require": {
+    "composer/installers": "^1.5",
+    "filp/whoops": "^2.7",
+    "johnbillion/extended-cpts": "^4.3",
+    "php": "^7.1",
+    "samrap/acf-fluent": "^0.4.0",
+    "soberwp/intervention": "1.2.0-p",
+    "stoutlogic/acf-builder": "^1.10",
+    "wpackagist-plugin/acf-extended": "^0.8.5",
+    "wpackagist-plugin/auto-cloudinary": "^1.2",
+    "wpackagist-plugin/disable-comments": "^2.1",
+    "wpackagist-plugin/disable-emojis": "^1.7",
+    "wpackagist-plugin/disable-gutenberg": "^2.0",
+    "wpengine/advanced-custom-fields-pro": "*"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "squizlabs/php_codesniffer": "^3.4"
+  },
+  "type": "wordpress-muplugin"
 }
