@@ -45,24 +45,11 @@
       "url": "http://github.com/simnom/WP_Model"
     },
     {
-      "package": {
-        "dist": {
-          "type": "zip",
-          "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%version}"
-        },
-        "name": "advanced-custom-fields/advanced-custom-fields-pro",
-        "require": {
-          "composer/installers": "^1.4",
-          "ffraenz/private-composer-installer": "^5.0"
-        },
-        "type": "wordpress-plugin",
-        "version": "5.9.3"
-      },
-      "type": "package"
+      "type": "composer",
+      "url": "https://connect.advancedcustomfields.com"
     }
   ],
   "require": {
-    "advanced-custom-fields/advanced-custom-fields-pro": "*",
     "composer/installers": "^1.5",
     "filp/whoops": "^2.7",
     "johnbillion/extended-cpts": "^4.3",
@@ -74,7 +61,8 @@
     "wpackagist-plugin/auto-cloudinary": "^1.2",
     "wpackagist-plugin/disable-comments": "^2.1",
     "wpackagist-plugin/disable-emojis": "^1.7",
-    "wpackagist-plugin/disable-gutenberg": "^2.0"
+    "wpackagist-plugin/disable-gutenberg": "^2.0",
+    "wpengine/advanced-custom-fields-pro": "*"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
